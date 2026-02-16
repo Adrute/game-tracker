@@ -138,7 +138,7 @@ export default function Home() {
             </div>
             
             <div className="flex items-center gap-2">
-                 <div className="hidden sm:flex bg-slate-100 p-1 rounded-lg border border-slate-200 mr-2">
+                 <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 mr-2">
                     <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-400 hover:text-slate-600'}`}><LayoutGrid size={18}/></button>
                     <button onClick={() => setViewMode('table')} className={`p-1.5 rounded-md transition-all ${viewMode === 'table' ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-400 hover:text-slate-600'}`}><List size={18}/></button>
                     <button onClick={() => setViewMode('dashboard')} className={`p-1.5 rounded-md transition-all ${viewMode === 'dashboard' ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-400 hover:text-slate-600'}`} title="Estadísticas"><LayoutDashboard size={18}/></button>
