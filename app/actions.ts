@@ -1,23 +1,31 @@
-'use server'
+"use server";
 
-export async function fetchGameData(query: string) {
+export async function searchGamesRAWG(query: string) {
   const apiKey = process.env.RAWG_API_KEY;
-  if (!apiKey) return null;
+  if (!apiKey) {
+    console.error("Falta la RAWG_API_KEY");
+    return [];
+  }
 
   try {
-    const res = await fetch(`https://api.rawg.io/api/games?key=${apiKey}&search=${query}&page_size=1`);
-    const data = await res.json();
+    // Pedimos 5 resultados
+    const response = await fetch(
+      `https://api.rawg.io/api/games?key=${apiKey}&search=${encodeURIComponent(query)}&page_size=5&ordering=-added`
+    );
+    const data = await response.json();
     
-    if (data.results && data.results.length > 0) {
-      return {
-        image_url: data.results[0].background_image,
-        rating: data.results[0].metacritic,
-        name: data.results[0].name
-      };
-    }
-    return null;
+    if (!data.results) return [];
+
+    // Mapeamos para devolver solo lo que nos interesa
+    return data.results.map((game: any) => ({
+      id: game.id,
+      name: game.name,
+      image_url: game.background_image, // RAWG usa background_image como portada principal
+      rating: game.metacritic || 0,
+      released: game.released ? game.released.substring(0, 4) : "N/A" // Solo el año
+    }));
   } catch (error) {
-    console.error("Error fetching RAWG:", error);
-    return null;
+    console.error("RAWG Error:", error);
+    return [];
   }
 }

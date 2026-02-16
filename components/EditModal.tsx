@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { X, Save, Calendar, Star } from "lucide-react";
+import { PLATFORMS } from "@/lib/constants"; // Importamos la lista maestra
 
 type Game = {
   id: number;
@@ -9,8 +10,8 @@ type Game = {
   platform: string;
   format: string;
   status: string;
-  rating: number;        // Nota de Metacritic (RAWG)
-  user_rating: number | null; // Tu nota personal
+  rating: number;        
+  user_rating: number | null; 
   started_at: string | null;
   finished_at: string | null;
 };
@@ -79,12 +80,14 @@ export default function EditModal({ game, onClose, onSave }: EditModalProps) {
         {/* Formulario con Scroll si es necesario */}
         <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-6 overflow-y-auto">
           
-          {/* Bloque 1: Estado y Plataforma */}
+          {/* Bloque 1: Estado y Plataforma - AQUI USAMOS LA LISTA MAESTRA */}
           <div className="grid grid-cols-2 gap-4">
              <div className="flex flex-col gap-1">
               <label className="text-xs text-gray-400 uppercase font-bold">Estado</label>
               <select value={status} onChange={(e) => setStatus(e.target.value)} className="bg-gray-700 p-2 rounded-lg text-white border border-gray-600">
                 <option value="Pendiente">Pendiente</option>
+                <option value="Deseado">Deseado (Wishlist)</option>
+                <option value="Empezado">Empezado</option>
                 <option value="Jugando">Jugando</option>
                 <option value="Completado">Completado</option>
                 <option value="Abandonado">Abandonado</option>
@@ -93,10 +96,9 @@ export default function EditModal({ game, onClose, onSave }: EditModalProps) {
              <div className="flex flex-col gap-1">
               <label className="text-xs text-gray-400 uppercase font-bold">Plataforma</label>
               <select value={platform} onChange={(e) => setPlatform(e.target.value)} className="bg-gray-700 p-2 rounded-lg text-white border border-gray-600">
-                <option>PS5</option>
-                <option>PC</option>
-                <option>Switch</option>
-                <option>Xbox</option>
+                {PLATFORMS.map((p) => (
+                    <option key={p} value={p}>{p}</option>
+                ))}
               </select>
             </div>
           </div>
