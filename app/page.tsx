@@ -7,6 +7,7 @@ import { Plus, Trash2, Gamepad2, Pencil, Search, Filter, X, Star, Calendar, Chec
 import Link from "next/link"; 
 import EditModal from "@/components/EditModal"; 
 import { PLATFORMS } from "@/lib/constants"; 
+import { useRouter } from "next/navigation";
 
 // --- TIPOS ---
 type Game = {
@@ -55,10 +56,28 @@ export default function Home() {
   const [searchText, setSearchText] = useState("");
   const [filterStatus, setFilterStatus] = useState("Todos");
 
+  const router = useRouter();
+
   useEffect(() => { fetchGames(); }, []);
 
   async function fetchGames() {
-    const { data } = await supabase.from("games").select("*").order("created_at", { ascending: false });
+    setLoading(true);
+    
+    // 1. Verificamos si hay usuario
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+      // Si no hay usuario, mandamos al login
+      router.push("/login");
+      return;
+    }
+
+    // 2. Si hay usuario, pedimos SUS juegos
+    const { data } = await supabase
+      .from("games")
+      .select("*")
+      .order("created_at", { ascending: false });
+      
     if (data) setGames(data);
     setLoading(false);
   }
@@ -78,6 +97,16 @@ export default function Home() {
   async function handleSaveGame() {
     if (!selectedGame) return;
     setLoading(true);
+
+    // Obtenemos el usuario actual
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (!user) {
+        alert("Debes iniciar sesión");
+        router.push("/login");
+        return;
+    }
+
     const { error } = await supabase.from("games").insert([{ 
         title: selectedGame.name, 
         platform, 
@@ -85,14 +114,15 @@ export default function Home() {
         status: initialStatus, 
         image_url: selectedGame.image_url || "https://via.placeholder.com/300x400", 
         rating: selectedGame.rating, 
-        user_rating: null 
+        user_rating: null,
+        user_id: user.id // <--- CLAVE: Vinculamos el juego al usuario
     }]);
 
     if (!error) {
-       resetAddForm();
-       fetchGames();
+      resetAddForm();
+      fetchGames();
     } else {
-       alert("Error: " + error.message);
+      alert("Error: " + error.message);
     }
     setLoading(false);
   }
@@ -136,6 +166,8 @@ export default function Home() {
       default: return `${base} bg-gray-100 text-gray-600 border-gray-200`;
     }
   };
+
+  
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] pb-20 font-sans text-slate-900">
