@@ -8,7 +8,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation"; 
 import ImportModal from "@/components/ImportModal"; 
 import MultiSelect from "@/components/MultiSelect"; 
-import { PLATFORMS, STATUSES, STATUS_COLORS } from "@/lib/constants"; // Importamos todo
+import { PLATFORMS, STATUSES, STATUS_COLORS } from "@/lib/constants";
+
+import Dashboard from "@/components/Dashboard";
+import { LayoutDashboard } from "lucide-react";
 
 // --- TIPOS ---
 type Game = {
@@ -46,8 +49,8 @@ export default function Home() {
   // UI States
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
-  
+  const [viewMode, setViewMode] = useState<'grid' | 'table' | 'dashboard'>('grid');
+
   // Search Logic
   const [searchQuery, setSearchQuery] = useState(""); 
   const [isSearching, setIsSearching] = useState(false); 
@@ -138,6 +141,7 @@ export default function Home() {
                  <div className="hidden sm:flex bg-slate-100 p-1 rounded-lg border border-slate-200 mr-2">
                     <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-400 hover:text-slate-600'}`}><LayoutGrid size={18}/></button>
                     <button onClick={() => setViewMode('table')} className={`p-1.5 rounded-md transition-all ${viewMode === 'table' ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-400 hover:text-slate-600'}`}><List size={18}/></button>
+                    <button onClick={() => setViewMode('dashboard')} className={`p-1.5 rounded-md transition-all ${viewMode === 'dashboard' ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-400 hover:text-slate-600'}`} title="Estadísticas"><LayoutDashboard size={18}/></button>
                 </div>
 
                 <button onClick={() => setIsImportModalOpen(true)} className="bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 px-3 py-2 rounded-full text-sm font-bold flex items-center gap-2 transition-all" title="Importar CSV">
@@ -170,7 +174,7 @@ export default function Home() {
             </div>
          </div>
 
-         {viewMode === 'grid' ? (
+         {viewMode === 'grid' && (
              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 {filteredGames.map((game) => (
                     <div key={game.id} className="group relative bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-100 overflow-hidden flex flex-col">
@@ -198,7 +202,9 @@ export default function Home() {
                     </div>
                 ))}
              </div>
-         ) : (
+         )}
+
+         {viewMode === 'table' && (
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <table className="w-full text-sm text-left">
                     <thead className="bg-slate-50 border-b border-slate-100"><tr><th className="px-6 py-4">Juego</th><th className="px-6 py-4">Plataforma</th><th className="px-6 py-4">Estado</th><th className="px-6 py-4 text-right">Acciones</th></tr></thead>
@@ -224,6 +230,10 @@ export default function Home() {
                     </tbody>
                 </table>
             </div>
+         )}
+
+         {viewMode === 'dashboard' && (
+             <Dashboard games={filteredGames} />
          )}
       </main>
 
