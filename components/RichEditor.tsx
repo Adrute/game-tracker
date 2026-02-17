@@ -2,12 +2,11 @@
 
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
-import 'react-quill-new/dist/quill.snow.css'; // <--- OJO: Cambia el import del CSS
+import 'react-quill-new/dist/quill.snow.css';
 
-// Importamos la nueva librería dinámicamente
 const ReactQuill = dynamic(() => import('react-quill-new'), { 
   ssr: false,
-  loading: () => <div className="h-64 bg-slate-50 animate-pulse rounded-xl border border-slate-200"/> 
+  loading: () => <div className="h-64 bg-slate-50 dark:bg-slate-900 animate-pulse rounded-xl border border-slate-200 dark:border-slate-800"/> 
 });
 
 interface RichEditorProps {
@@ -18,7 +17,6 @@ interface RichEditorProps {
 
 export default function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
   
-  // Configuración de la barra de herramientas
   const modules = useMemo(() => ({
     toolbar: [
       [{ 'header': [1, 2, false] }],
@@ -32,6 +30,7 @@ export default function RichEditor({ value, onChange, placeholder }: RichEditorP
   return (
     <div className="rich-editor-wrapper">
       <style jsx global>{`
+        /* --- ESTILOS BASE (LIGHT) --- */
         .rich-editor-wrapper .ql-toolbar {
           border: 1px solid #e2e8f0 !important;
           border-bottom: none !important;
@@ -51,6 +50,44 @@ export default function RichEditor({ value, onChange, placeholder }: RichEditorP
           min-height: 300px;
           color: #334155;
         }
+
+        /* --- MODO OSCURO (DARK) --- */
+        .dark .rich-editor-wrapper .ql-toolbar {
+          background: #0f172a !important; /* slate-900 */
+          border-color: #1e293b !important; /* slate-800 */
+        }
+        .dark .rich-editor-wrapper .ql-container {
+          background: #020617 !important; /* slate-950 */
+          border-color: #1e293b !important; /* slate-800 */
+        }
+        .dark .rich-editor-wrapper .ql-editor {
+          color: #e2e8f0 !important; /* slate-200 */
+        }
+        .dark .rich-editor-wrapper .ql-editor.ql-blank::before {
+          color: #64748b !important; /* Placeholder color */
+        }
+
+        /* --- ARREGLAR ICONOS EN DARK MODE --- */
+        /* Los iconos de Quill usan stroke o fill negro por defecto. Lo invertimos. */
+        .dark .rich-editor-wrapper .ql-stroke {
+          stroke: #cbd5e1 !important; /* slate-300 */
+        }
+        .dark .rich-editor-wrapper .ql-fill {
+          fill: #cbd5e1 !important;
+        }
+        .dark .rich-editor-wrapper .ql-picker {
+          color: #cbd5e1 !important;
+        }
+        /* Hover state para iconos */
+        .dark .rich-editor-wrapper .ql-picker-label:hover,
+        .dark .rich-editor-wrapper button:hover .ql-stroke {
+          stroke: #10b981 !important; /* emerald-500 */
+        }
+        .dark .rich-editor-wrapper button:hover .ql-fill {
+            fill: #10b981 !important;
+        }
+
+        /* Estilos Imágenes */
         .rich-editor-wrapper .ql-editor img {
             max-width: 100%;
             border-radius: 8px;

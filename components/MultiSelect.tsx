@@ -14,7 +14,6 @@ export default function MultiSelect({ options, selected, onChange, label }: Mult
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Cerrar al hacer clic fuera
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -39,8 +38,8 @@ export default function MultiSelect({ options, selected, onChange, label }: Mult
         onClick={() => setIsOpen(!isOpen)}
         className={`flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-sm font-medium border transition-all min-w-[140px] ${
           selected.length > 0 
-            ? "bg-slate-900 text-white border-slate-900" 
-            : "bg-white text-slate-600 border-slate-200 hover:border-slate-300"
+            ? "bg-slate-900 dark:bg-emerald-600 text-white border-slate-900 dark:border-emerald-600" 
+            : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
         }`}
       >
         <span className="truncate">
@@ -50,14 +49,14 @@ export default function MultiSelect({ options, selected, onChange, label }: Mult
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-slate-100 p-2 z-50 max-h-60 overflow-y-auto">
+        <div className="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 p-2 z-50 max-h-60 overflow-y-auto">
           {options.map((option) => (
             <div
               key={option}
               onClick={() => toggleOption(option)}
-              className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 cursor-pointer text-sm text-slate-700"
+              className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer text-sm text-slate-700 dark:text-slate-300 transition-colors"
             >
-              <div className={`w-4 h-4 rounded border flex items-center justify-center ${selected.includes(option) ? 'bg-emerald-500 border-emerald-500' : 'border-slate-300'}`}>
+              <div className={`w-4 h-4 rounded border flex items-center justify-center ${selected.includes(option) ? 'bg-emerald-500 border-emerald-500' : 'border-slate-300 dark:border-slate-600'}`}>
                 {selected.includes(option) && <Check size={10} className="text-white" />}
               </div>
               {option}
