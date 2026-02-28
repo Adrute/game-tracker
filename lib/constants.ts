@@ -7,26 +7,26 @@ export const PLATFORMS = [
   "Neo Geo", "Android", "iOS", "Mac", "Linux"
 ];
 
-// Lista para los desplegables (Selects)
 export const STATUSES = [
   "Pendiente",
   "Jugando",
   "Completado",
   "100%",
+  "Atemporal",
   "Empezado",
   "Deseado",
   "Abandonado"
 ];
 
-// Mapa de colores centralizado (Badges)
-// Si cambias un color aquí, cambia en TODA la app
+// Colores actualizados con soporte perfecto para Modo Oscuro
 export const STATUS_COLORS: Record<string, string> = {
-  "100%": "bg-yellow-100 text-yellow-800 border-yellow-200",
-  "Completado": "bg-emerald-100 text-emerald-700 border-emerald-200",
-  "Jugando": "bg-indigo-100 text-indigo-700 border-indigo-200",
-  "Empezado": "bg-sky-100 text-sky-700 border-sky-200",
-  "Deseado": "bg-pink-100 text-pink-700 border-pink-200",
-  "Abandonado": "bg-red-100 text-red-700 border-red-200",
-  "Pendiente": "bg-gray-100 text-gray-600 border-gray-200",
-  "default": "bg-gray-100 text-gray-600 border-gray-200"
+  "100%": "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400 border-yellow-200 dark:border-yellow-800",
+  "Completado": "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800",
+  "Jugando": "bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 border-indigo-200 dark:border-indigo-800",
+  "Atemporal": "bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800",
+  "Empezado": "bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800",
+  "Deseado": "bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-400 border-pink-200 dark:border-pink-800",
+  "Abandonado": "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-800",
+  "Pendiente": "bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-700",
+  "default": "bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-300 border-gray-200 dark:border-slate-700"
 };

@@ -12,6 +12,8 @@ import Dashboard from "@/components/Dashboard";
 import { ThemeToggle } from "@/components/ThemeToggle"; // <--- NUEVO IMPORT
 import { PLATFORMS, STATUSES, STATUS_COLORS } from "@/lib/constants";
 
+import LoadingSpinner from "@/components/LoadingSpinner";
+
 // --- TIPOS ---
 type Game = {
     id: number;
@@ -133,6 +135,8 @@ export default function Home() {
 
     return (
         <div className="min-h-screen bg-[#F8FAFC] dark:bg-slate-950 pb-20 font-sans text-slate-900 dark:text-slate-100 transition-colors duration-300">
+
+            {loading && <LoadingSpinner />}
 
             {/* HEADER */}
             <header className="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
@@ -259,10 +263,15 @@ export default function Home() {
                         </div>
                         <form onSubmit={(e) => handleSearch(e, 1)} className="mb-4 relative">
                             <input
-                                className="w-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 p-3 pl-10 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800 dark:text-white"
+                                className="w-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 p-3 pl-10 pr-10 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 text-slate-800 dark:text-white transition-colors"
                                 autoFocus placeholder="Buscar título..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
                             />
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+
+                            {/* AQUÍ ESTÁ EL SPINNER QUE FALTABA */}
+                            {isSearching && (
+                                <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 text-emerald-500 animate-spin" size={18} />
+                            )}
                         </form>
 
                         <div className="overflow-y-auto flex-1">
