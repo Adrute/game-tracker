@@ -9,10 +9,13 @@ import { useRouter } from "next/navigation";
 import ImportModal from "@/components/ImportModal";
 import MultiSelect from "@/components/MultiSelect";
 import Dashboard from "@/components/Dashboard";
-import { ThemeToggle } from "@/components/ThemeToggle"; // <--- NUEVO IMPORT
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { PLATFORMS, STATUSES, STATUS_COLORS } from "@/lib/constants";
 
 import LoadingSpinner from "@/components/LoadingSpinner";
+
+import QueueView from "@/components/QueueView";
+import { ListOrdered } from "lucide-react";
 
 // --- TIPOS ---
 type Game = {
@@ -50,7 +53,7 @@ export default function Home() {
     // UI States
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isImportModalOpen, setIsImportModalOpen] = useState(false);
-    const [viewMode, setViewMode] = useState<'grid' | 'table' | 'dashboard'>('grid');
+    const [viewMode, setViewMode] = useState<'grid' | 'table' | 'dashboard' | 'queue'>('grid');
 
     // Search Logic
     const [searchQuery, setSearchQuery] = useState("");
@@ -152,6 +155,7 @@ export default function Home() {
                             <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded-md transition-all ${viewMode === 'grid' ? 'bg-white dark:bg-slate-700 shadow-sm text-emerald-600 dark:text-emerald-400' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Cuadrícula"><LayoutGrid size={18} /></button>
                             <button onClick={() => setViewMode('table')} className={`p-1.5 rounded-md transition-all ${viewMode === 'table' ? 'bg-white dark:bg-slate-700 shadow-sm text-emerald-600 dark:text-emerald-400' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Lista"><List size={18} /></button>
                             <button onClick={() => setViewMode('dashboard')} className={`p-1.5 rounded-md transition-all ${viewMode === 'dashboard' ? 'bg-white dark:bg-slate-700 shadow-sm text-emerald-600 dark:text-emerald-400' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Estadísticas"><LayoutDashboard size={18} /></button>
+                            <button onClick={() => setViewMode('queue')} className={`p-1.5 rounded-md transition-all ${viewMode === 'queue' ? 'bg-white dark:bg-slate-700 shadow-sm text-emerald-600 dark:text-emerald-400' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'}`} title="Cola de Pendientes"><ListOrdered size={18} /></button>
                         </div>
 
                         {/* BOTÓN MODO OSCURO */}
@@ -250,6 +254,9 @@ export default function Home() {
 
                 {viewMode === 'dashboard' && (
                     <Dashboard games={filteredGames} />
+                )}
+                {viewMode === 'queue' && (
+                    <QueueView games={games} onUpdate={fetchGames} />
                 )}
             </main>
 
