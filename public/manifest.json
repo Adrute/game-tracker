@@ -1,6 +1,11 @@
 {
-  "name": "Adrute Games",
+  "name": "Adrute Games Tracker",
   "short_name": "AdruteGames",
+  "description": "Tu colección personal de videojuegos",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#059669",
   "icons": [
     {
       "src": "/icon-192.png",
@@ -12,10 +17,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "theme_color": "#111827",
-  "background_color": "#111827",
-  "start_url": "/",
-  "display": "standalone",
-  "orientation": "portrait"
+  ]
 }
